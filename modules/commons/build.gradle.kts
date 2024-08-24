@@ -3,8 +3,9 @@ group = "com.sicklibs"
 version = "0.0.1"
 
 plugins {
-  kotlin("jvm") version "1.9.25"
+  kotlin("jvm")
   groovy
+  jacoco
 }
 
 repositories {
@@ -20,6 +21,61 @@ dependencies {
   testImplementation(project(":commons-test"))
 }
 
+tasks.check {
+  dependsOn(tasks.jacocoTestCoverageVerification)
+}
+
 tasks.test {
   useJUnitPlatform()
+  finalizedBy(tasks.jacocoTestReport)
+}
+
+val excludedFromJacoco = emptyList<String>()
+
+tasks.jacocoTestReport {
+  reports {
+    xml.required.set(true)
+    html.required.set(true)
+  }
+
+  classDirectories.setFrom(
+    files(
+      classDirectories.files.map {
+        fileTree(it) {
+          exclude(excludedFromJacoco)
+        }
+      }
+    )
+  )
+
+  dependsOn(tasks.test)
+}
+
+tasks.jacocoTestCoverageVerification {
+  classDirectories.setFrom(
+    files(
+      classDirectories.files.map {
+        fileTree(it) {
+          exclude(excludedFromJacoco)
+        }
+      }
+    )
+  )
+
+  violationRules {
+    rule {
+      element = "CLASS"
+
+      limit {
+        counter = "INSTRUCTION"
+        value = "COVEREDRATIO"
+        minimum = 1.toBigDecimal()
+      }
+      limit {
+        counter = "BRANCH"
+        value = "COVEREDRATIO"
+        minimum = 1.toBigDecimal()
+      }
+    }
+  }
 }
