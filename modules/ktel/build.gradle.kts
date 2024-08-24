@@ -26,7 +26,18 @@ dependencies {
   testImplementation(project(":commons-test"))
 }
 
-val excludedFromJacoco = emptyList<String>()
+tasks.check {
+  dependsOn(tasks.jacocoTestCoverageVerification)
+}
+
+tasks.test {
+  useJUnitPlatform()
+  finalizedBy(tasks.jacocoTestReport)
+}
+
+val excludedFromJacoco = listOf(
+  "**/KtelApplication**"
+)
 
 tasks.jacocoTestReport {
   reports {
