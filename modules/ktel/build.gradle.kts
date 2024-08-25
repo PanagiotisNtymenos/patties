@@ -1,27 +1,21 @@
-val ktelGroupId = "com.sicklibs"
-val ktelName = "ktel"
-val ktelVersion = "0.0.1"
-
-description = "Patties :: $ktelName"
-group = ktelGroupId
-version = ktelVersion
+description = "Patties :: $name"
+version = "0.0.1"
 
 plugins {
   `maven-publish`
   kotlin("jvm")
   kotlin("plugin.spring")
-  id("org.springframework.boot") version "3.3.3"
-  id("io.spring.dependency-management") version "1.1.6"
   groovy
   jacoco
 }
 
 repositories {
   mavenCentral()
+  mavenLocal()
 }
 
 dependencies {
-  implementation("org.springframework.boot:spring-boot-starter")
+  implementation("org.springframework.boot:spring-boot:3.3.3")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation(project(":commons"))
 
@@ -35,15 +29,15 @@ publishing {
   publications {
     create<MavenPublication>("mavenJava") {
       from(components["java"])
-
-      groupId = ktelGroupId
-      artifactId = ktelName
-      version = ktelVersion
     }
   }
   repositories {
     mavenLocal()
   }
+}
+
+tasks.jar {
+  from(project(":commons").sourceSets.main.get().output)
 }
 
 tasks.check {

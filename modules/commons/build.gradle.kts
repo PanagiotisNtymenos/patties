@@ -1,4 +1,5 @@
-description = "Patties :: commons"
+description = "Patties :: $name"
+version = "0.0.1"
 
 plugins {
   kotlin("jvm")
@@ -8,6 +9,7 @@ plugins {
 
 repositories {
   mavenCentral()
+  mavenLocal()
 }
 
 dependencies {
