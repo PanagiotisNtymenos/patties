@@ -25,6 +25,7 @@ internal class CommandHandlerResolver(
       .invert()
   }
 
+  @Suppress("UNCHECKED_CAST")
   fun <C : Command<R>, R> resolve(command: C): CommandHandler<C, R> =
     commandsWithHandlers[command::class.java]
       ?.let { it as CommandHandler<C, R> }
