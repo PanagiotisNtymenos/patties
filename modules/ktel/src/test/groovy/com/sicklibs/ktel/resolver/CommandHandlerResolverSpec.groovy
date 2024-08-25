@@ -8,20 +8,14 @@ import com.sicklibs.ktel.dummy.handler.FirstDummyCommandHandler
 import com.sicklibs.ktel.handler.CommandHandler
 import com.sicklibs.ktel.handler.exception.CommandHandlerNotFoundException
 import com.sicklibs.ktel.validator.CommandValidator
+import org.springframework.context.ApplicationContext
 
 class CommandHandlerResolverSpec extends UnitTest {
-  FirstDummyCommandHandler handler = GroovyMock()
+  FirstDummyCommandHandler handler = Mock()
+  ApplicationContext applicationContext = Mock()
   CommandTypeResolver commandTypeResolver = Mock()
   CommandValidator validator = Mock()
   CommandHandlerResolver resolver
-
-  def setup() {
-    resolver = new CommandHandlerResolver(
-      [handler],
-      commandTypeResolver,
-      validator
-    )
-  }
 
   def "Should return the command handler that handles the given command"() {
     given:
@@ -30,15 +24,20 @@ class CommandHandlerResolverSpec extends UnitTest {
     and:
       Map handlersWithCommands = [(handler): command.class]
 
-    and:
-      commandTypeResolver.resolve(handler) >> command.class
-      validator.validate(handlersWithCommands) >> handlersWithCommands
-      resolver.init()
-
     when:
-      CommandHandler response = resolver.resolve(command)
+      CommandHandler response = new CommandHandlerResolver(
+        applicationContext,
+        commandTypeResolver,
+        validator
+      ).resolve(command)
 
     then:
+      1 * applicationContext.getBeansOfType(CommandHandler) >> [(randomString()): handler]
+      1 * commandTypeResolver.resolve(handler) >> command.class
+      1 * validator.validate(handlersWithCommands) >> handlersWithCommands
+      0 * _
+
+    and:
       response == handler
   }
 
@@ -47,9 +46,18 @@ class CommandHandlerResolverSpec extends UnitTest {
       Command command = GroovyMock()
 
     when:
-      resolver.resolve(command)
+      new CommandHandlerResolver(
+        applicationContext,
+        commandTypeResolver,
+        validator
+      ).resolve(command)
 
     then:
+      1 * applicationContext.getBeansOfType(CommandHandler) >> [:]
+      1 * validator.validate([:]) >> [:]
+      0 * _
+
+    and:
       thrown(CommandHandlerNotFoundException)
   }
 }
