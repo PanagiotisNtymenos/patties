@@ -10,8 +10,6 @@ plugins {
   `maven-publish`
   kotlin("jvm")
   kotlin("plugin.spring")
-  id("org.springframework.boot") version "3.3.3"
-  id("io.spring.dependency-management") version "1.1.6"
   groovy
   jacoco
 }
@@ -21,7 +19,7 @@ repositories {
 }
 
 dependencies {
-  implementation("org.springframework.boot:spring-boot-starter")
+  implementation("org.springframework.boot:spring-boot:3.3.3")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation(project(":commons"))
 
