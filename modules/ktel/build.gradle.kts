@@ -1,10 +1,5 @@
-val ktelGroupId = "com.sicklibs"
-val ktelName = "ktel"
-val ktelVersion = "0.0.1"
-
-description = "Patties :: $ktelName"
-group = ktelGroupId
-version = ktelVersion
+description = "Patties :: $name"
+version = "0.0.1"
 
 plugins {
   `maven-publish`
@@ -16,6 +11,7 @@ plugins {
 
 repositories {
   mavenCentral()
+  mavenLocal()
 }
 
 dependencies {
@@ -33,15 +29,15 @@ publishing {
   publications {
     create<MavenPublication>("mavenJava") {
       from(components["java"])
-
-      groupId = ktelGroupId
-      artifactId = ktelName
-      version = ktelVersion
     }
   }
   repositories {
     mavenLocal()
   }
+}
+
+tasks.jar {
+  from(project(":commons").sourceSets.main.get().output)
 }
 
 tasks.check {
