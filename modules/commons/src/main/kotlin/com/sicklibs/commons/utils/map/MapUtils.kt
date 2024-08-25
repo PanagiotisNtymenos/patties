@@ -37,7 +37,7 @@ fun <K, V> Map<K, V>.filterDuplicateValues(): Map<K, V> =
 /**
  * Extension function to run a block of code if the map is not empty
  */
-fun <K, V> Map<K, V>.alsoIfNotEmpty(block: (Map<K, V>) -> Map<K, V>) = also {
+fun <K, V> Map<K, V>.alsoIfNotEmpty(block: (Map<K, V>) -> Unit) = also {
   if (isNotEmpty())
     block(this)
 }
