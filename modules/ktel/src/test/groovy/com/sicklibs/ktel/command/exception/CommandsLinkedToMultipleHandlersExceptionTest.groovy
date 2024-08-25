@@ -19,7 +19,7 @@ class CommandsLinkedToMultipleHandlersExceptionTest extends UnitTest {
       CommandHandler secondHandler = SecondDummyCommandHandlerBuilder.make().build()
 
     and:
-      List handlersToCommands = [new Pair(firstHandler, command), new Pair(secondHandler, command)]
+      Map handlersToCommands = [(firstHandler): command, (secondHandler): command]
 
     when:
       Exception exception = new CommandsLinkedToMultipleHandlersException(handlersToCommands)
@@ -39,11 +39,11 @@ class CommandsLinkedToMultipleHandlersExceptionTest extends UnitTest {
       CommandHandler fourthHandler = FourthDummyCommandHandlerBuilder.make().build()
 
     and:
-      List handlersToCommands = [
-        new Pair(firstHandler, firstCommand),
-        new Pair(secondHandler, firstCommand),
-        new Pair(thirdHandler, secondCommand),
-        new Pair(fourthHandler, secondCommand)
+      Map handlersToCommands = [
+        (firstHandler) : firstCommand,
+        (secondHandler): firstCommand,
+        (thirdHandler) : secondCommand,
+        (fourthHandler): secondCommand
       ]
 
     when:
