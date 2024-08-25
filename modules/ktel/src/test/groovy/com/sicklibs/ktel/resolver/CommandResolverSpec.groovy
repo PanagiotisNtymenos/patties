@@ -1,15 +1,16 @@
 package com.sicklibs.ktel.resolver
 
 import com.sicklibs.commonstest.helpers.UnitTest
+import com.sicklibs.ktel.command.resolver.CommandResolver
 import com.sicklibs.ktel.dummy.command.FirstDummyCommand
 import com.sicklibs.ktel.dummy.handler.FirstDummyCommandHandler
 import com.sicklibs.ktel.handler.CommandHandler
 
-class CommandTypeResolverSpec extends UnitTest {
-  CommandTypeResolver resolver
+class CommandResolverSpec extends UnitTest {
+  CommandResolver resolver
 
   def setup() {
-    resolver = new CommandTypeResolver()
+    resolver = new CommandResolver()
   }
 
   def "Should resolve the command type"() {

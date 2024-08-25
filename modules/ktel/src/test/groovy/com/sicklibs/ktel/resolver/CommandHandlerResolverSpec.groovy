@@ -2,8 +2,8 @@ package com.sicklibs.ktel.resolver
 
 import com.sicklibs.commonstest.helpers.UnitTest
 import com.sicklibs.ktel.command.Command
+import com.sicklibs.ktel.command.resolver.CommandResolver
 import com.sicklibs.ktel.dummy.builder.FirstDummyCommandBuilder
-import com.sicklibs.ktel.dummy.command.FirstDummyCommand
 import com.sicklibs.ktel.dummy.handler.FirstDummyCommandHandler
 import com.sicklibs.ktel.handler.CommandHandler
 import com.sicklibs.ktel.handler.exception.CommandHandlerNotFoundException
@@ -13,9 +13,8 @@ import org.springframework.context.ApplicationContext
 class CommandHandlerResolverSpec extends UnitTest {
   FirstDummyCommandHandler handler = Mock()
   ApplicationContext applicationContext = Mock()
-  CommandTypeResolver commandTypeResolver = Mock()
+  CommandResolver commandResolver = Mock()
   CommandValidator validator = Mock()
-  CommandHandlerResolver resolver
 
   def "Should return the command handler that handles the given command"() {
     given:
@@ -27,13 +26,13 @@ class CommandHandlerResolverSpec extends UnitTest {
     when:
       CommandHandler response = new CommandHandlerResolver(
         applicationContext,
-        commandTypeResolver,
+        commandResolver,
         validator
       ).resolve(command)
 
     then:
       1 * applicationContext.getBeansOfType(CommandHandler) >> [(randomString()): handler]
-      1 * commandTypeResolver.resolve(handler) >> command.class
+      1 * commandResolver.resolve(handler) >> command.class
       1 * validator.validate(handlersWithCommands) >> handlersWithCommands
       0 * _
 
@@ -48,7 +47,7 @@ class CommandHandlerResolverSpec extends UnitTest {
     when:
       new CommandHandlerResolver(
         applicationContext,
-        commandTypeResolver,
+        commandResolver,
         validator
       ).resolve(command)
 
