@@ -43,3 +43,11 @@ jobs:
         run: ./gradlew ktel:test
       - name: Unit Tests Verification
         run: ./gradlew ktel:jacocoTestVerification
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./modules/ktel/build/reports/jacoco/test/jacocoTestReport.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true

@@ -1,6 +1,7 @@
 # Ktel 🚌
 
 ![CI](https://github.com/PanagiotisNtymenos/patties/actions/workflows/ktel-ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/PanagiotisNtymenos/patties/develop/main/graph/badge.svg)](https://codecov.io/gh/PanagiotisNtymenos/patties)
 
 ## Table of Contents
 
