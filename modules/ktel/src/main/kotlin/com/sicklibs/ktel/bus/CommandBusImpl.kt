@@ -2,9 +2,7 @@ package com.sicklibs.ktel.bus
 
 import com.sicklibs.ktel.command.Command
 import com.sicklibs.ktel.resolver.CommandHandlerResolver
-import org.springframework.stereotype.Component
 
-@Component
 internal class CommandBusImpl(
   private val commandHandlerResolver: CommandHandlerResolver
 ) : CommandBus {
