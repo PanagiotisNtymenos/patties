@@ -1,7 +1,6 @@
 package com.sicklibs.commons.utils.map
 
 import com.sicklibs.commonstest.helpers.UnitTest
-import kotlin.Pair
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -10,7 +9,6 @@ import static com.sicklibs.commons.utils.map.MapUtilsKt.filterDuplicateValues
 import static com.sicklibs.commons.utils.map.MapUtilsKt.filterNullValues
 import static com.sicklibs.commons.utils.map.MapUtilsKt.filterOutNullValues
 import static com.sicklibs.commons.utils.map.MapUtilsKt.invert
-import static com.sicklibs.commons.utils.map.MapUtilsKt.toPairs
 
 class MapUtilsTest extends UnitTest {
 
@@ -67,21 +65,6 @@ class MapUtilsTest extends UnitTest {
       source                      || expected
       [:]                         || [:]
       [(randomString): randomInt] || [(randomInt): randomString]
-  }
-
-  // toPairs
-  @Unroll
-  def "Should convert a map into a list of pairs when toPairs is invoked"() {
-    when:
-      List<Pair> response = toPairs(source)
-
-    then:
-      response == expected
-
-    where:
-      source                      || expected
-      [:]                         || []
-      [(randomString): randomInt] || [new Pair(randomString, randomInt)]
   }
 
   // filterDuplicateValues

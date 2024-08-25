@@ -5,11 +5,11 @@ import com.sicklibs.ktel.command.Command
 import org.springframework.stereotype.Component
 
 @Component
-internal class CommandBusImpl<C : Command<R>, R>(
-  private val commandHandlerResolver: CommandHandlerResolver<C, R>
-) : CommandBus<C, R> {
+internal class CommandBusImpl(
+  private val commandHandlerResolver: CommandHandlerResolver
+) : CommandBus {
 
-  override fun route(command: C): R =
+  override fun <C : Command<R>, R> route(command: C): R =
     commandHandlerResolver.resolve(command)
       .handle(command)
 }

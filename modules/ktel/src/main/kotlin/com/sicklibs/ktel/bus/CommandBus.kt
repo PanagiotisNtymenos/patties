@@ -5,7 +5,7 @@ import com.sicklibs.ktel.command.Command
 /**
  * Command bus interface
  */
-interface CommandBus<C : Command<R>, R> {
+interface CommandBus {
 
   /**
    * Routes the command to the appropriate handler
@@ -13,5 +13,5 @@ interface CommandBus<C : Command<R>, R> {
    * @param command the command to route
    * @return the response of the handler
    */
-  fun route(command: C): R
+  fun <C : Command<R>, R> route(command: C): R
 }

@@ -27,12 +27,6 @@ fun <K, V> Map<K, V>.invert(): Map<V, K> =
   map { (key, value) -> value to key }.toMap()
 
 /**
- * Extension function to convert a map to a list of pairs
- */
-fun <K, V> Map<K, V>.toPairs(): List<Pair<K, V>> =
-  map { (key, value) -> key to value }
-
-/**
  * Extension function to filter map entries with duplicate values
  */
 fun <K, V> Map<K, V>.filterDuplicateValues(): Map<K, V> =

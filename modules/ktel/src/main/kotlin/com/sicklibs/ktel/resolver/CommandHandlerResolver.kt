@@ -9,13 +9,13 @@ import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Component
 
 @Component
-internal class CommandHandlerResolver<C : Command<R>, R>(
-  private val handlers: List<CommandHandler<C, R>>,
-  private val commandTypeResolver: CommandTypeResolver<C, R>,
-  private val validator: CommandValidator<C, R>
+internal class CommandHandlerResolver(
+  private val handlers: List<CommandHandler<Command<*>, *>>,
+  private val commandTypeResolver: CommandTypeResolver,
+  private val validator: CommandValidator
 ) {
 
-  private var commandsWithHandlers: Map<Class<*>, CommandHandler<C, R>> = emptyMap()
+  private var commandsWithHandlers: Map<Class<*>, CommandHandler<Command<*>, *>> = emptyMap()
 
   @PostConstruct
   private fun init() {
@@ -25,16 +25,17 @@ internal class CommandHandlerResolver<C : Command<R>, R>(
       .invert()
   }
 
-  fun resolve(command: C): CommandHandler<C, R> =
+  fun <C : Command<R>, R> resolve(command: C): CommandHandler<C, R> =
     commandsWithHandlers[command::class.java]
+      ?.let { it as CommandHandler<C, R> }
       ?: throw CommandHandlerNotFoundException(command)
 
-  private fun List<CommandHandler<C, R>>.associateWithCommands(): Map<CommandHandler<C, R>, Class<*>?> =
+  private fun List<CommandHandler<Command<*>, *>>.associateWithCommands(): Map<CommandHandler<Command<*>, *>, Class<*>?> =
     associateWith { handler -> resolveCommandType(handler) }
 
-  private fun Map<CommandHandler<C, R>, Class<*>?>.validate(): Map<CommandHandler<C, R>, Class<*>> =
+  private fun Map<CommandHandler<Command<*>, *>, Class<*>?>.validate(): Map<CommandHandler<Command<*>, *>, Class<*>> =
     validator.validate(this)
 
-  private fun resolveCommandType(handler: CommandHandler<C, R>): Class<*>? =
+  private fun resolveCommandType(handler: CommandHandler<Command<*>, *>): Class<*>? =
     commandTypeResolver.resolve(handler)
 }
