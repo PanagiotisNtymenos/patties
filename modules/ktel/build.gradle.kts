@@ -1,8 +1,13 @@
-description = "Patties :: ktel"
-group = "com.sicklibs"
-version = "0.0.1"
+val ktelGroupId = "com.sicklibs"
+val ktelName = "ktel"
+val ktelVersion = "0.0.1"
+
+description = "Patties :: $ktelName"
+group = ktelGroupId
+version = ktelVersion
 
 plugins {
+  `maven-publish`
   kotlin("jvm")
   kotlin("plugin.spring")
   id("org.springframework.boot") version "3.3.3"
@@ -24,6 +29,21 @@ dependencies {
   testImplementation("org.spockframework:spock-core:2.4-M4-groovy-4.0")
   testImplementation("org.mockito:mockito-core:5.12.0")
   testImplementation(project(":commons-test"))
+}
+
+publishing {
+  publications {
+    create<MavenPublication>("mavenJava") {
+      from(components["java"])
+
+      groupId = ktelGroupId
+      artifactId = ktelName
+      version = ktelVersion
+    }
+  }
+  repositories {
+    mavenLocal()
+  }
 }
 
 tasks.check {
