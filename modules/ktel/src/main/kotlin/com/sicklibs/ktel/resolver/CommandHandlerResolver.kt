@@ -4,17 +4,16 @@ import com.sicklibs.commons.utils.map.alsoIfNotEmpty
 import com.sicklibs.commons.utils.map.invert
 import com.sicklibs.ktel.bus.CommandBus
 import com.sicklibs.ktel.command.Command
+import com.sicklibs.ktel.command.resolver.CommandResolver
 import com.sicklibs.ktel.handler.CommandHandler
 import com.sicklibs.ktel.handler.exception.CommandHandlerNotFoundException
 import com.sicklibs.ktel.validator.CommandValidator
 import org.springframework.context.ApplicationContext
-import org.springframework.stereotype.Component
 import java.util.logging.Logger
 
-@Component
 internal class CommandHandlerResolver(
   private val applicationContext: ApplicationContext,
-  private val commandTypeResolver: CommandTypeResolver,
+  private val commandResolver: CommandResolver,
   private val validator: CommandValidator
 ) {
 
@@ -49,5 +48,5 @@ internal class CommandHandlerResolver(
     validator.validate(this)
 
   private fun resolveCommandType(handler: CommandHandler<Command<*>, *>): Class<*>? =
-    commandTypeResolver.resolve(handler)
+    commandResolver.resolve(handler)
 }
