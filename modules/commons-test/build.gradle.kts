@@ -1,6 +1,4 @@
 description = "Patties :: commons-test"
-group = "com.sicklibs"
-version = "0.0.1"
 
 plugins {
   groovy
